@@ -6,6 +6,7 @@ import com.diako.order_service.dto.OrderRequest;
 import com.diako.order_service.dto.OrderResponse;
 import com.diako.order_service.entity.Order;
 import com.diako.order_service.entity.OrderStatus;
+import com.diako.order_service.event.OrderCreatedEvent;
 import com.diako.order_service.exception.OrderNotFoundException;
 import com.diako.order_service.exception.ProductReferenceNotFoundException;
 import com.diako.order_service.repository.OrderRepository;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
@@ -25,6 +27,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +38,9 @@ class OrderServiceTest {
 
     @Mock
     private ProductClient productClient;
+
+    @Mock
+    private KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
 
     @InjectMocks
     private OrderService orderService;
@@ -50,6 +56,7 @@ class OrderServiceTest {
         assertThat(response.totalPrice()).isEqualByComparingTo("89.70");
         assertThat(response.productId()).isEqualTo(1L);
         verify(orderRepository).save(any(Order.class));
+        verify(kafkaTemplate).send(eq("order-created"), any(OrderCreatedEvent.class));
     }
 
     @Test
