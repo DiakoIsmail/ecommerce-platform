@@ -1,0 +1,15 @@
+package com.diako.product_service.cucumber;
+
+import com.diako.product_service.config.TestcontainersConfiguration;
+import io.cucumber.spring.CucumberContextConfiguration;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+
+
+@AutoConfigureTestRestTemplate
+@CucumberContextConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestcontainersConfiguration.class)
+public class CucumberSpringConfiguration {
+}

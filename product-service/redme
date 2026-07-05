@@ -1,0 +1,10 @@
+# Skapa en produkt
+curl -X POST http://localhost:8081/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Coffee Mug", "description": "Ceramic, 350ml", "price": 12.99}'
+
+# Hämta alla
+curl http://localhost:8081/api/products
+
+# Hämta en specifik (byt 1 mot id från svaret ovan)
+curl http://localhost:8081/api/products/1
