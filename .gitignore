@@ -1,0 +1,16 @@
+# Maven-bygg (alla fyra tjänster)
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Hemligheter — committa aldrig denna
+.env
+
+# Loggar
+*.log
